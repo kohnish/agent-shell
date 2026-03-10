@@ -4562,6 +4562,9 @@ When PICK-SHELL is non-nil, prompt for which shell buffer to use."
   (interactive)
   (agent-shell-send-clipboard-image t))
 
+;; Inherit yank's `delete-selection' property so
+;; `delete-selection-mode' replaces the active region on paste.
+(put 'agent-shell-yank-dwim 'delete-selection 'yank)
 (defun agent-shell-yank-dwim (&optional arg)
   "Yank or paste clipboard image into `agent-shell'.
 
