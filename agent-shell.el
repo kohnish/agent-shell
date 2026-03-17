@@ -5837,9 +5837,9 @@ See https://agentclientprotocol.com/protocol/session-modes for details."
                         ('dots-round '("⢎⡰" "⢎⡡" "⢎⡑" "⢎⠱" "⠎⡱" "⢊⡱" "⢌⡱" "⢆⡱"))
                         ('wide '("░   " "░░  " "░░░ " "░░░░" "░░░ " "░░  " "░   " "    "))
                         ((pred listp) agent-shell-busy-indicator-frames)
-                        (_ '("▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" "▇" "▆" "▅" "▄" "▃" "▂")))))
-    (concat " " (seq-elt frames (mod (map-nested-elt (agent-shell--state) '(:heartbeat :value))
-                                     (length frames))))))
+                        (_ '("▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" "▇" "▆" "▅" "▄" "▃" "▂"))))
+              (value (map-nested-elt (agent-shell--state) '(:heartbeat :value))))
+    (concat " " (seq-elt frames (mod value (length frames))))))
 
 (defun agent-shell--mode-line-format ()
   "Return `agent-shell''s mode-line format.
