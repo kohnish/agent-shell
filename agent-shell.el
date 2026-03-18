@@ -543,7 +543,7 @@ When non-nil (and supported by agent), prefer ACP session resumes over loading."
   :type 'boolean
   :group 'agent-shell)
 
-(defcustom agent-shell-session-strategy 'new-deferred
+(defcustom agent-shell-session-strategy 'prompt
   "How to handle sessions when starting a new shell.
 
 Available values:
