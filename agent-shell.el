@@ -3092,7 +3092,7 @@ insert the character instead."
         (when (eq next-pos prompt-pos)
           (comint-skip-prompt))))))
 
-(defun agent-shell-previous-item ()
+(defun agent-shell-previous-item (&optional no-insert)
   "Go to previous item.
 
 Could be a prompt or an expandable item.
@@ -3110,8 +3110,9 @@ insert the character instead."
            (> (length (this-command-keys-vector)) 0)
            ;; Ensure invoked using a key binding.
            (eq (key-binding (this-command-keys-vector)) this-command))
-      ;; At prompt, insert character.
-      (self-insert-command 1)
+    ;; At prompt, insert character.
+    (when (not no-insert)
+      (self-insert-command 1))
     ;; Otherwise navigate.
     (let* ((current-pos (point))
            (prompt-pos (save-mark-and-excursion
