@@ -945,7 +945,8 @@ Works from both shell and viewport buffers."
                  (not (y-or-n-p "Agent is busy.  Restart anyway?")))
         (user-error "Cancelled")))
     (kill-buffer shell-buffer)
-    (let ((new-shell-buffer (agent-shell--start
+    (let* ((default-directory (buffer-local-value 'default-directory shell-buffer))
+           (new-shell-buffer (agent-shell--start
                              :config config
                              :session-strategy strategy
                              :session-id session-id
