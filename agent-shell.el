@@ -6394,7 +6394,7 @@ Shows \" ⧉\" when a command prefix is used."
                                    (map-nested-elt (agent-shell--state) '(:session :mode-id))
                                    (agent-shell--get-available-modes (agent-shell--state)))))
               (concat " ➤ " (propertize mode-name
-                                        'face 'font-lock-type-face
+                                        'face 'font-lock-negation-char-face
                                         'help-echo (concat "Click to open session mode menu "
                                                            (propertize (key-description (where-is-internal
                                                                                          'agent-shell-set-session-mode
