@@ -3747,10 +3747,16 @@ SUBSCRIPTION is a token returned by `agent-shell-subscribe-to'."
                           (equal (map-elt sub :token) subscription))
                         (map-elt (agent-shell--state) :event-subscriptions))))
 
+(defun agent-shell--msg (msg)
+  (run-at-time 0 nil (lambda () (message-box (concat "agent-shell: " msg)))))
+
 (cl-defun agent-shell--emit-event (&key event data)
   "Emit an EVENT to matching subscribers.
 EVENT is a symbol identifying the event.
 DATA is an optional alist of event-specific data."
+  (cond
+    ((string-equal event "permission-request") (agent-shell--msg "permission required"))
+    ((string-equal event "turn-complete") (agent-shell--msg "prompt ready")))
   (let ((event-alist (list (cons :event event))))
     (when data
       (push (cons :data data) event-alist))
