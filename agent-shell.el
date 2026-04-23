@@ -6873,16 +6873,15 @@ or select a specific request to remove."
             (selection (cdr (assoc (completing-read "Remove: " choices nil t) choices))))
        (list (unless (eq selection 'remove-all) selection)))))
   (if remove-index
-      (when-let* ((message "Remove? \"%s\"")
-                  (confirmed (y-or-n-p (format message
-                                               (nth remove-index
-                                                    (map-elt agent-shell--state :pending-requests)))))
-                  (pending (map-elt agent-shell--state :pending-requests))
-                  (new-pending (append (seq-take pending remove-index)
-                                       (seq-drop pending (1+ remove-index)))))
-        (map-put! agent-shell--state :pending-requests new-pending)
-        (message "Removed (%d remaining)"
-                 (length new-pending)))
+      (when (y-or-n-p (format "Remove? \"%s\""
+                              (nth remove-index
+                                   (map-elt agent-shell--state :pending-requests))))
+        (let* ((pending (map-elt agent-shell--state :pending-requests))
+               (new-pending (append (seq-take pending remove-index)
+                                    (seq-drop pending (1+ remove-index)))))
+          (map-put! agent-shell--state :pending-requests new-pending)
+          (message "Removed (%d remaining)"
+                   (length new-pending))))
     (when (y-or-n-p (format "Remove %d pending requests?"
                             (length (map-elt agent-shell--state :pending-requests))))
       (map-put! agent-shell--state :pending-requests nil)
