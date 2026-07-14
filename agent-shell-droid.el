@@ -100,6 +100,8 @@ none, dynamic, off, minimal, low, medium, high, xhigh, max"
   :type '(choice (const nil) string)
   :group 'agent-shell)
 
+(defcustom agent-shell-droid-default-thought-level nil "comment")
+
 (defcustom agent-shell-droid-acp-command
   '("droid" "exec" "--output-format" "acp")
   "Command and parameters for the Factory Droid ACP client.
@@ -139,7 +141,7 @@ Returns an agent configuration alist using `agent-shell-make-agent-config'."
    :client-maker (lambda (buffer)
                    (agent-shell-droid-make-client :buffer buffer))
    :default-model-id (lambda () agent-shell-droid-default-model-id)
-   :default-session-mode-id (lambda () agent-shell-droid-default-session-mode-id)
+   :default-session-mode-id (lambda () (when agent-shell-droid-default-thought-level (agent-shell-set-session-thought-level-2 agent-shell-droid-default-thought-level)) agent-shell-droid-default-session-mode-id)
    :install-instructions "See https://docs.factory.ai/cli/getting-started/quickstart for installation."))
 
 ;;;###autoload

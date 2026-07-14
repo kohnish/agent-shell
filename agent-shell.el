@@ -9783,6 +9783,28 @@ Optionally, get notified of completion with ON-SUCCESS function."
      :thought-level-id selected-id
      :on-success on-success)))
 
+(defun agent-shell-set-session-thought-level-2 (selected-id &optional on-success)
+  (declare (modes agent-shell-mode))
+  (interactive)
+  (unless (derived-mode-p 'agent-shell-mode)
+    (user-error "Not in an agent-shell buffer"))
+  (unless (map-nested-elt (agent-shell--state) '(:session :id))
+    (user-error "No active session"))
+  (unless (agent-shell--get-available-thought-levels (agent-shell--state))
+    (user-error "Agent does not advertise a thought level option for this session"))
+  (let* ((current-id (agent-shell--current-thought-level-id (agent-shell--state)))
+         (option (agent-shell--config-option-by-category (agent-shell--state) "thought_level"))
+         (default-name (and current-id
+                            (agent-shell--config-option-value-name option current-id)))
+         (choices (mapcar (lambda (value)
+                            (cons (map-elt value :name)
+                                  (map-elt value :value)))
+                          (agent-shell--get-available-thought-levels (agent-shell--state)))))
+    (message "selections %s %s %s" choices current-id selected-id)
+    (agent-shell--config-option-set-thought-level-id
+     :thought-level-id selected-id
+     :on-success on-success)))
+
 (defun agent-shell-set-session-config-option (&optional on-success)
   "Set a session config option.
 
