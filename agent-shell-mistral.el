@@ -140,8 +140,8 @@ See `agent-shell-mistral-authentication' for authentication configuration."
       (user-error "Please set your `agent-shell-mistral-authentication'"))
     (agent-shell--make-acp-client :command (car agent-shell-mistral-acp-command)
                                   :command-params (cdr agent-shell-mistral-acp-command)
-                                  :environment-variables (append (list (format "MISTRAL_API_KEY=%s" api-key))
-                                                                 agent-shell-mistral-environment)
+                                  ;; :environment-variables (append (list (format "MISTRAL_API_KEY=%s" api-key))
+                                  ;;                                agent-shell-mistral-environment)
                                   :context-buffer buffer)))
 
 (defun agent-shell-mistral-key ()
