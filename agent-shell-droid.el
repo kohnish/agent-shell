@@ -124,6 +124,12 @@ Example usage to set custom environment variables:
   :type '(repeat string)
   :group 'agent-shell)
 
+(defcustom agent-shell-droid-default-thought-level
+  nil
+  "Default thought level id"
+  :type '(repeat string)
+  :group 'agent-shell)
+
 (defun agent-shell-droid-make-agent-config ()
   "Create a Factory Droid agent configuration.
 
@@ -139,6 +145,7 @@ Returns an agent configuration alist using `agent-shell-make-agent-config'."
    :client-maker (lambda (buffer)
                    (agent-shell-droid-make-client :buffer buffer))
    :default-model-id (lambda () agent-shell-droid-default-model-id)
+   :default-thought-level-id (lambda () agent-shell-droid-default-thought-level)
    :default-session-mode-id (lambda () agent-shell-droid-default-session-mode-id)
    :install-instructions "See https://docs.factory.ai/cli/getting-started/quickstart for installation."))
 
