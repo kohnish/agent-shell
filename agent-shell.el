@@ -79,6 +79,7 @@
 (require 'agent-shell-elicitation)
 (require 'agent-shell-experimental)
 (require 'agent-shell-droid)
+(require 'agent-shell-devin)
 (require 'agent-shell-github)
 (require 'agent-shell-google)
 (require 'agent-shell-goose)
@@ -754,6 +755,7 @@ Each element can be:
                                               needs-authentication
                                               authenticate-request-maker
                                               default-model-id
+                                              default-thought-level-id
                                               default-session-mode-id
                                               default-config-options
                                               session-meta
@@ -812,6 +814,7 @@ Returns an alist with all specified values."
     (:needs-authentication . ,needs-authentication)
     (:authenticate-request-maker . ,authenticate-request-maker) ;; function
     (:default-model-id . ,default-model-id)                     ;; function
+    (:default-thought-level-id . ,default-thought-level-id)                     ;; function
     (:default-session-mode-id . ,default-session-mode-id)       ;; function
     (:default-config-options . ,default-config-options)         ;; function
     (:session-meta . ,session-meta)
@@ -933,6 +936,7 @@ behavior explicitly."
                  (const :tag "Cursor" cursor)
                  (const :tag "DeepSeek" deepseek)
                  (const :tag "Droid" droid)
+                 (const :tag "Devin" devin)
                  (const :tag "Gemini CLI" gemini-cli)
                  (const :tag "Goose" goose)
                  (const :tag "Grok Build" grok-build)
@@ -2782,6 +2786,8 @@ Flow:
             :model-id (funcall (map-nested-elt (agent-shell--state)
                                                '(:agent-config :default-model-id)))
             :on-model-changed (lambda ()
+                                (when-let* ((thought-level-id (funcall (map-nested-elt (agent-shell--state) '(:agent-config :default-thought-level-id)))))
+                                  (set-session-thought-level thought-level-id))
                                 (map-put! (agent-shell--state) :set-model t)
                                 (agent-shell--handle :command command :shell-buffer shell-buffer))))
           ;; Send ACP request to set default session mode (optional)
